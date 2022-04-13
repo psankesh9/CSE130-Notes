@@ -1,0 +1,56 @@
+
+let TRUE = \x y -> x
+let FALSE = \x y-> y
+let ITE = \b x y -> b x y
+let NOT = \b     -> b FALSE TRUE 
+
+let AND = \b1 b2 -> b1 b2 FALSE
+
+let OR  = \b1 b2 -> b1 TRUE b2
+
+let MKPAIR = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE   -- call w/ TRUE, get first value
+let SND    = \p -> p FALSE  -- call w/ FALSE, get second value
+let MKTRIPLE = \x y z -> MKPAIR (MKPAIR x y) z
+let TRD3 = \t -> SND t
+let FST3 = \t -> FST (FST T)
+let SND = \t -> SND (FST T)
+eval ex1 : 
+  (\x -> x) apple
+  =b> apple
+
+eval ex2:
+    (\f -> f (\x -> x)) (give apple)
+    =b> (give apple) (\x -> x)
+
+eval ex3:
+    (\x -> (\y -> y)) apple
+    =b> (\y -> y)
+
+eval ex4:
+    (\x -> x (\x -> x)) apple
+    =b> apple (\x -> x)
+    
+eval ex5:
+    (\x -> (\y -> x)) y
+    =a> (\x->(\z->x)) y
+    =b> (\z -> y)
+
+eval ite_false:
+    ITE FALSE apple banana
+    =d> ((\b -> (\x y -> b x y)) FALSE) apple banana
+    =b> ((\x -> (\y -> FALSE x y)) apple) banana
+    =b> (\y -> FALSE apple y)  banana
+    =b> FALSE apple banana
+    =d> ((\x -> (\y-> y)) apple) banana
+    =b> (\y-> y) banana
+    =b> banana
+
+eval fst:
+    FST(MKPAIR apple banana)
+    =~> apple
+
+eval snd:
+    SND (MKPAIR apple banana)
+    =~> banana
+    
